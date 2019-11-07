@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import $ from 'jquery';
-//import api from '.api';
 import store from './store';
+import api from './api';
 
 
 //function to generate the HTML elements for the bookmark
@@ -10,16 +10,18 @@ const generateBookmarkElement = function(bookmarkObj) {
     console.log('generateBookmarkElement has been ran!');
     if (bookmarkObj.expanded === false) {
         return ` <div class="bookmark">
-                    <h3 class ="title">${bookmarkObj.title}</h3>
+                    <h3 class ="title" id="${bookmarkObj.id}">${bookmarkObj.title}</h3>
                     ${bookmarkObj.rating} <img src="https://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" class="ratingImg">
-                </div>`
+                    <button class="delete" id="${bookmarkObj.id}">DELETE</button>
+                    </div>`
     }
 
     return ` <div class="bookmark">
-                <h3 class ="title">${bookmarkObj.title}</h3>
-                <button class="goToUrl" href="${bookmarkObj.url}">Take me there!</button>
-                ${bookmarkObj.rating} <img src="shttps://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" class="ratingImg"/>
-                <p class="description">${bookmarkObj.description}</p>
+                <h3 class ="title" id="${bookmarkObj.id}">${bookmarkObj.title}</h3>
+                <a href="${bookmarkObj.url}">Take me there!</a>
+                ${bookmarkObj.rating} <img src="https://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" class="ratingImg"/>
+                <p class="description">${bookmarkObj.desc}</p>
+                <button class="delete" id="${bookmarkObj.id}">DELETE</button>
             </div>`
 };
 
@@ -39,9 +41,18 @@ const render = function() {
 console.log('render has been run!');
 
 let currState = store.state;
-const bookmarkListString = generateBookmarkListString(currState.bookmarks);
+if (currState.adding === true) {
+    let addmenu = generateAddMenuElements();
+    $('#addMenu').html(`${addmenu}`);
+    submitNewBookmark();
+    cancelAdding();
+}
 
+const bookmarkListString = generateBookmarkListString(currState.bookmarks);
 $('#bookmarkList').html(bookmarkListString);
+generateExpandedview();
+deleteButton();
+
 };
 
 
@@ -55,8 +66,55 @@ $('#bookmarkList').html(bookmarkListString);
 //function to render error message when adding invalid 
 const generateError = function(){}
 
-//function to render expanded view of bookmark
-const generateExpandedview = function() {}
+
+
+
+
+
+
+
+
+
+
+
+// functionality concerning expanded view here
+
+//event listener to toggle expanded view of bookmark
+const generateExpandedview = function() {
+    $('.title').click(function () {
+        console.log('generateExpandedview just ran')
+        let id = $(this).attr('id');
+        console.log(id);
+        store.toggleExpand(id);
+        render();
+    })
+
+}
+
+
+
+
+//event listener for delete button
+
+const deleteButton = function() {
+    $('.delete').on('click', function() {
+        console.log('delete function ran');
+        let id = $(this).attr('id');
+        console.log(id);
+        api.deleteBookmark(id);
+        store.deleteBookmark(id);
+        render();
+    })
+
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -68,22 +126,21 @@ const generateExpandedview = function() {}
 
 //functionality concerning add button/menu here
 
-//event listener for the add button
+//event listener for the add menu button
 const addButton = function() {
     $('.options').on('click', '.add-new', event => {
-      let addmenu = generateAddMenuElements();
-    
-    $('main').html(`${addmenu}`);
-    });
+      store.toggleAddMenu();  
+      render();  
+      });
 }
 //function to render the menu to add new bookmarks
 const generateAddMenuElements = function() {
 
     return `<form id="addNew">
                 <label for="bookmarkTitle">Title:</label>
-                <input type="text" name="title id="bookmarkTitle" value="title" />
+                <input type="text" name="title" id="bookmarkTitle" />
                 <label for="bookmarkURL">New Bookmark URL:</label>
-                <input type="text" name="url" id="bookmarkURL" value="paste URL here" />
+                <input type="text" name="url" id="bookmarkURL" />
                 <label for="ratingTool">Rating:</label>
                 <select class="ratingTool" name="ratingTool" id="ratingTool">
                     <option value="5">5</option>
@@ -95,13 +152,14 @@ const generateAddMenuElements = function() {
                 <label for="descriptionBox">Short Description:</label>
                 <input type="text" name="descriptionBox" id="descriptionBox"/>
                 
-                <button class="cancelButton">Cancel</button>
-                <button type="submit" class="createButton">Create</button>
+                <button type="submit">Create</button>
+                <button type="reset" id="cancelButton">Cancel</button>
             </form>`;
 }
 
 //event listener to submit new bookmark info
 const submitNewBookmark = function() {
+    console.log('submitNewBookmark ran!');
     $('#addNew').submit(function (event) {
         event.preventDefault();
         const newBookmark = {};
@@ -111,11 +169,20 @@ const submitNewBookmark = function() {
         newBookmark.desc = $('#descriptionBox').val();
         newBookmark.rating = $('#ratingTool').val();
 
-        console.log('submitNewBookmark ran!');
-        console.log(bookmark.title);
+        api.createBookmark(newBookmark);  
+        store.addBookmark(newBookmark);
+        render();     
     })
 }
 
+//event listener for the cancel button
+const cancelAdding = function() {
+    $('#cancelButton').on('click',(event) => {
+        store.toggleAddMenu();
+        $('#addMenu').html('');
+        render();
+        });
+};
 
 
 
@@ -125,11 +192,12 @@ const submitNewBookmark = function() {
 
 
 
-//function to run all eventlisteners
+
+//function to initialize eventlisteners
 
 const eventListeners = function() {
     addButton();
-    submitNewBookmark();
+
 
 
 }

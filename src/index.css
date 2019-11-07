@@ -1,3 +1,7 @@
 .ratingImg {
+    height: 15px;
+}
+
+.hidden {
     display: none;
 }

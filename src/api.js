@@ -10,14 +10,16 @@ const getBookmark = function() {
 
 //POST/create api
 const createBookmark = function (bookmark) {
-    let newBookmark = {
+    console.log('createBookmark has been run!');
+
+   /* let newBookmark = {
         title: bookmark.title,
         url: bookmark.url,
         desc: bookmark.desc,
         rating: bookmark.rating
-    }
+    }*/
 
-    let newBookmarkJSON = JSON.stringify(newBookmark);
+    let newBookmarkJSON = JSON.stringify(bookmark);
 
     return fetch(`${BASE_URL}`, {
         method: 'POST',
@@ -30,7 +32,18 @@ const createBookmark = function (bookmark) {
 
 
 
+//DELETE api
+
+const deleteBookmark = function (id) {
+    return fetch(`${BASE_URL}/${id}`, {
+      method: 'DELETE',
+    }); 
+  };
+
+
+
 export default {
     createBookmark,
-    getBookmark
+    getBookmark,
+    deleteBookmark
 }

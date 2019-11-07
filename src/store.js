@@ -1,13 +1,6 @@
 /* eslint-disable indent */
 const state = {
-    bookmarks: [{
-        id: '6ffw',
-        title: 'Title 2',
-        rating: 5,
-        url: 'http://www.title2.com',
-        description: 'dolorum tempore deserunt',
-        expanded: false
-    }],
+    bookmarks: [],
     adding: false,
     error: null,
     filter: 0
@@ -16,22 +9,36 @@ const state = {
 //function to add new bookmark objects in to the store
 
 const addBookmark = function(bookmarkObj) {
+    bookmarkObj.expanded = false;
     return state.bookmarks.push(bookmarkObj);
 }
 
-//function to convert new bookmark info into an object
-const handleNewBookmark = function() {}
+//function to delete within store
+const deleteBookmark = function(id) {
+    let indx = state.bookmarks.findIndex(bm => bm.id === id);
+    state.bookmarks.splice(indx, 1);
+}
+
+
 
 //function to toggle add menu
 const toggleAddMenu = function() {
+    console.log('toggleAddMenu ran')
     state.adding = !state.adding;
-}
+    console.log(state.adding);
+
+    }
+
 
 //function to toggle error
 const toggleError = function() {}
 
 //function to toggle expanded view of a bookmark obj
-const toggleExpand = function() {}
+const toggleExpand = function(id) {
+    let bmArray = state.bookmarks;
+    let targetBm = bmArray.find((bm) => (bm.id === id));
+    targetBm.expanded = !targetBm.expanded;
+}
 
 
 
@@ -40,8 +47,8 @@ const toggleExpand = function() {}
 export default {
     state,
     addBookmark,
-    handleNewBookmark,
     toggleAddMenu,
     toggleError,
-    toggleExpand
+    toggleExpand,
+    deleteBookmark
 }
