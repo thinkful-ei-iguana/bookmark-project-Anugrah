@@ -1,6 +1,13 @@
 /* eslint-disable indent */
-const store = {
-    bookmarks: [],
+const state = {
+    bookmarks: [{
+        id: '6ffw',
+        title: 'Title 2',
+        rating: 5,
+        url: 'http://www.title2.com',
+        description: 'dolorum tempore deserunt',
+        expanded: false
+    }],
     adding: false,
     error: null,
     filter: 0
@@ -9,7 +16,7 @@ const store = {
 //function to add new bookmark objects in to the store
 
 const addBookmark = function(bookmarkObj) {
-    return store.bookmarks.push(bookmarkObj);
+    return state.bookmarks.push(bookmarkObj);
 }
 
 //function to convert new bookmark info into an object
@@ -29,5 +36,10 @@ const toggleExpand = function() {}
 
 
 export default {
-    store
+    state,
+    addBookmark,
+    handleNewBookmark,
+    toggleAddMenu,
+    toggleError,
+    toggleExpand
 }
