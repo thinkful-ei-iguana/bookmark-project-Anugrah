@@ -23,7 +23,9 @@ const addBookmark = function(bookmarkObj) {
 const handleNewBookmark = function() {}
 
 //function to toggle add menu
-const toggleAddMenu = function() {}
+const toggleAddMenu = function() {
+    state.adding = !state.adding;
+}
 
 //function to toggle error
 const toggleError = function() {}
