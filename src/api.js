@@ -2,17 +2,19 @@
 
 const BASE_URL = 'https://thinkful-list-api.herokuapp.com/anugrah/bookmarks'
 
+//GET/read api 
 const getBookmark = function() {
     console.log('getBookmark has been run!')
     return fetch(`${BASE_URL}`)
 };
 
-const createBookmark = function (title, url, desc, rating) {
+//POST/create api
+const createBookmark = function (bookmark) {
     let newBookmark = {
-        title: title,
-        url: url,
-        desc: desc,
-        rating: rating
+        title: bookmark.title,
+        url: bookmark.url,
+        desc: bookmark.desc,
+        rating: bookmark.rating
     }
 
     let newBookmarkJSON = JSON.stringify(newBookmark);

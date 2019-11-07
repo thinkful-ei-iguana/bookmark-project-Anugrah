@@ -33,7 +33,6 @@ const generateBookmarkListString = function(bookmarkArr) {
 
 
 
-
 //function to render the state of the store into the dom
 const render = function() {
 
@@ -53,13 +52,36 @@ $('#bookmarkList').html(bookmarkListString);
 
 
 
+//function to render error message when adding invalid 
+const generateError = function(){}
+
+//function to render expanded view of bookmark
+const generateExpandedview = function() {}
 
 
 
+
+
+
+
+
+
+//functionality concerning add button/menu here
+
+//event listener for the add button
+const addButton = function() {
+    $('.options').on('click', '.add-new', event => {
+      let addmenu = generateAddMenuElements();
+    
+    $('main').html(`${addmenu}`);
+    });
+}
 //function to render the menu to add new bookmarks
 const generateAddMenuElements = function() {
 
-    return `<form class="addNew">
+    return `<form id="addNew">
+                <label for="bookmarkTitle">Title:</label>
+                <input type="text" name="title id="bookmarkTitle" value="title" />
                 <label for="bookmarkURL">New Bookmark URL:</label>
                 <input type="text" name="url" id="bookmarkURL" value="paste URL here" />
                 <label for="ratingTool">Rating:</label>
@@ -74,32 +96,29 @@ const generateAddMenuElements = function() {
                 <input type="text" name="descriptionBox" id="descriptionBox"/>
                 
                 <button class="cancelButton">Cancel</button>
-                <button class="createButton">Create</button>
+                <button type="submit" class="createButton">Create</button>
             </form>`;
+}
 
+//event listener to submit new bookmark info
+const submitNewBookmark = function() {
+    $('#addNew').submit(function (event) {
+        event.preventDefault();
+        const newBookmark = {};
 
+        newBookmark.title = $('#bookmarkTitle').val();
+        newBookmark.url = $('#bookmarkURL').val();
+        newBookmark.desc = $('#descriptionBox').val();
+        newBookmark.rating = $('#ratingTool').val();
+
+        console.log('submitNewBookmark ran!');
+        console.log(bookmark.title);
+    })
 }
 
 
 
-//function to render error message when adding invalid 
-const generateError = function(){}
 
-//function to render expanded view of bookmark
-const generateExpandedview = function() {}
-
-
-
-
-//event listener for the add button
-
-const addButton = function() {
-    $('.options').on('click', '.add-new', event => {
-      let addmenu = generateAddMenuElements();
-    
-    $('main').html(`${addmenu}`);
-    });
-}
 
 
 
@@ -110,6 +129,7 @@ const addButton = function() {
 
 const eventListeners = function() {
     addButton();
+    submitNewBookmark();
 
 
 }
