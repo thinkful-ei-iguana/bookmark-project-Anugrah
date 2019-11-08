@@ -11,14 +11,6 @@ const getBookmark = function() {
 //POST/create api
 const createBookmark = function (bookmark) {
     console.log('createBookmark has been run!');
-
-   /* let newBookmark = {
-        title: bookmark.title,
-        url: bookmark.url,
-        desc: bookmark.desc,
-        rating: bookmark.rating
-    }*/
-
     let newBookmarkJSON = JSON.stringify(bookmark);
 
     return fetch(`${BASE_URL}`, {

@@ -2,6 +2,7 @@
 import $ from 'jquery';
 import store from './store';
 import api from './api';
+import { filter } from 'minimatch';
 
 
 //function to generate the HTML elements for the bookmark
@@ -9,14 +10,14 @@ import api from './api';
 const generateBookmarkElement = function(bookmarkObj) {
     console.log('generateBookmarkElement has been ran!');
     if (bookmarkObj.expanded === false) {
-        return ` <div class="bookmark">
+        return ` <div class="bookmark ${bookmarkObj.rating}" id="${bookmarkObj.id}">
                     <h3 class ="title" id="${bookmarkObj.id}">${bookmarkObj.title}</h3>
                     ${bookmarkObj.rating} <img src="https://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" class="ratingImg">
                     <button class="delete" id="${bookmarkObj.id}">DELETE</button>
                     </div>`
     }
 
-    return ` <div class="bookmark">
+    return ` <div class="bookmark ${bookmarkObj.rating}" id="${bookmarkObj.id}">
                 <h3 class ="title" id="${bookmarkObj.id}">${bookmarkObj.title}</h3>
                 <a href="${bookmarkObj.url}">Take me there!</a>
                 ${bookmarkObj.rating} <img src="https://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" class="ratingImg"/>
@@ -52,8 +53,35 @@ const bookmarkListString = generateBookmarkListString(currState.bookmarks);
 $('#bookmarkList').html(bookmarkListString);
 generateExpandedview();
 deleteButton();
+filterBookmarks();
 
 };
+
+
+
+//event listener for the filterer
+
+const filterBookmarks = function() {
+    $('.filter').change(function() {
+        let filterNum = $('.filter').val();
+        console.log(filterNum);
+              
+        for (let i = 0; i<=filterNum; i++){
+        $('.bookmark').filter(`${i}`); 
+        }}
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
