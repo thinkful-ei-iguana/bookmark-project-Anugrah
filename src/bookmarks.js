@@ -11,16 +11,16 @@ const generateBookmarkElement = function(bookmarkObj) {
     console.log('generateBookmarkElement has been ran!');
     if (bookmarkObj.expanded === false) {
         return ` <div class="bookmark ${bookmarkObj.rating}" id="${bookmarkObj.id}">
-                    <h3 class ="title" id="${bookmarkObj.id}">${bookmarkObj.title}</h3>
-                    ${bookmarkObj.rating} <img src="https://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" class="ratingImg">
+                    <button class ="title" id="${bookmarkObj.id}">${bookmarkObj.title}</button>
+                    ${bookmarkObj.rating} <img src="https://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" alt="small icon of a star" class="ratingImg">
                     <button class="delete" id="${bookmarkObj.id}">DELETE</button>
                     </div>`
     }
 
     return ` <div class="bookmark ${bookmarkObj.rating}" id="${bookmarkObj.id}">
-                <h3 class ="title" id="${bookmarkObj.id}">${bookmarkObj.title}</h3>
-                <a href="${bookmarkObj.url}">Take me there!</a>
-                ${bookmarkObj.rating} <img src="https://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" class="ratingImg"/>
+                <button class ="title" id="${bookmarkObj.id}">${bookmarkObj.title}</button>
+                <button class="link" href="${bookmarkObj.url}">Take me there!</button>
+                ${bookmarkObj.rating} <img src="https://www.clipartwiki.com/clipimg/full/21-219855_gold-stars-png-transparent-background-gold-star.png" alt="small icon of a star" class="ratingImg"/>
                 <p class="description">${bookmarkObj.desc}</p>
                 <button class="delete" id="${bookmarkObj.id}">DELETE</button>
             </div>`
