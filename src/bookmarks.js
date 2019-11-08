@@ -64,37 +64,12 @@ filterBookmarks();
 const filterBookmarks = function() {
     $('.filter').change(function() {
         let filterNum = $('.filter').val();
-        console.log(filterNum);
-              
-        for (let i = 0; i<=filterNum; i++){
-        $('.bookmark').filter(`${i}`); 
+        console.log(filterNum);  
+        for (let i = 1; i<filterNum; i++){
+        $(`.${i}`).addClass('hidden'); 
         }}
     )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//function to render error message when adding invalid 
-const generateError = function(){}
-
-
 
 
 
@@ -197,11 +172,16 @@ const submitNewBookmark = function() {
         newBookmark.desc = $('#descriptionBox').val();
         newBookmark.rating = $('#ratingTool').val();
 
-        api.createBookmark(newBookmark);  
-        store.addBookmark(newBookmark);
-        render();     
+        api.createBookmark(newBookmark)    
+        .then(() => {store.addBookmark(newBookmark);})
+        .then(() => {render();})
+        .then(response => response.json())  
+        .catch(err => {
+            console.log('catch block running');
+            $('#addNew').append(`<p>Invalid entry: ${err.message}, Title and URl required (include Https://)</p>`);
+            });
     })
-}
+};
 
 //event listener for the cancel button
 const cancelAdding = function() {
@@ -236,7 +216,6 @@ export default {
     render,
     generateBookmarkElement,
     generateAddMenuElements,
-    generateError,
     generateExpandedview,
     eventListeners
 }
